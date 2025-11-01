@@ -19,19 +19,17 @@ export const Input: FC = () => {
     return () => abort();
   }, [abort])
 
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
-
   const handleSubmit = async () => {
     const inputValue = inputRef.current?.value.trim();
     if (!inputValue || isLoading) return;
 
     pushUser(inputValue);
-    
+
     inputRef.current!.value = '';
 
-    complete(inputValue);
+    await complete(inputValue);
+
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const handleKeyDown = (e: KeyboardEvent) => {
@@ -45,7 +43,7 @@ export const Input: FC = () => {
     <div className="chat-container">
       <div className="messages-area">
         {messages.length === 0 ? (
-          <h1 className="welcome-message">Ready when you are</h1>
+          <h1 class="welcome-message">Ask anything.</h1>
         ) : (
           <div className="messages-list">
             {messages.map((message, index) => (
@@ -66,13 +64,13 @@ export const Input: FC = () => {
           </div>
         )}
       </div>
-      
+
       <div className="input-container">
-        <div className="input-wrapper">
+        <div className={`input-wrapper ${isLoading && 'loading'}`}>
           <input
             ref={inputRef}
             type="text"
-            placeholder="Ask anything"
+            placeholder="Who was marco polo?"
             onKeyDown={handleKeyDown}
             disabled={isLoading}
             className="chat-input"
@@ -96,7 +94,7 @@ export const Input: FC = () => {
           </button>
         </div>
       </div>
-      
+
       <div className="disclaimer" />
     </div>
   );

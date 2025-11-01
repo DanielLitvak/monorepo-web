@@ -1,31 +1,71 @@
 @import './reset.css';
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen-Sans,Ubuntu,Cantarell,'Helvetica Neue',sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  font-size: clamp(1rem, calc(1rem + 0.1vw), 1.2rem);
+  font-size: clamp(1.25rem, 0.625rem + 2vw, 1.5rem);
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --fill-blue: #535bf2;
+  /* Background colors */
+  --bg-primary: #0f0f0f;
+  --bg-secondary: #1a1a1a;
+  --bg-tertiary: #222222;
+  --bg-chat: #181818;
+  --bg-input: #252525;
+  --bg-button: #2a2a2a;
+  --bg-button-hover: #3b82f6;
+  --bg-message-user: #2563eb;
+  --bg-light: #ffffff;
+  --bg-button-light: #f5f5f5;
+
+  /* Text colors */
+  --text-primary: #e5e5e5;
+  --text-secondary: #ffffff;
+  --text-tertiary: #b3b3b3;
+  --text-muted: rgba(255, 255, 255, 0.55);
+  --text-muted-medium: rgba(255, 255, 255, 0.75);
+  --text-muted-strong: rgba(255, 255, 255, 0.95);
+  --text-light: #1a1a1a;
+  --text-gray: #6b7280;
+
+  /* Link colors */
+  --link-primary: #60a5fa;
+  --link-primary-hover: #3b82f6;
+  --link-light-hover: #2563eb;
+  --link-primary-alpha: #60a5faaa;
+
+  /* Border colors */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-medium: rgba(255, 255, 255, 0.15);
+  --border-strong: rgba(255, 255, 255, 0.25);
+
+  /* Accent colors */
+  --accent-blue: #3b82f6;
+  --accent-purple: #3b82f6aa;
+
+  /* Legacy variables (for backwards compatibility) */
+  --fill-blue: var(--accent-blue);
+  --fill-dark: var(--bg-secondary);
+  --btn-text-color: var(--text-tertiary);
 }
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: var(--link-primary);
   text-decoration: inherit;
 }
 
 a:hover {
-  color: #535bf2;
+  color: var(--link-primary-hover);
 }
 
 input {
@@ -45,8 +85,7 @@ body {
 }
 
 h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+  font-weight: 500;
 }
 
 button {
@@ -55,12 +94,12 @@ button {
   padding: 0.6em 1.2em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: var(--bg-button);
   cursor: pointer;
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: var(--link-primary);
 }
 button:focus,
 button:focus-visible {
@@ -69,13 +108,36 @@ button:focus-visible {
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    /* Background colors - light theme */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f9fafb;
+    --bg-tertiary: #f3f4f6;
+    --bg-chat: #ffffff;
+    --bg-input: #ffffff;
+    --bg-button: #f3f4f6;
+    --bg-button-hover: #3b82f6;
+    --bg-message-user: #2563eb;
+
+    /* Text colors - light theme */
+    --text-primary: #111827;
+    --text-secondary: #1f2937;
+    --text-tertiary: #4b5563;
+    --text-muted: rgba(0, 0, 0, 0.5);
+    --text-muted-medium: rgba(0, 0, 0, 0.7);
+    --text-muted-strong: rgba(0, 0, 0, 0.9);
+
+    /* Border colors - light theme */
+    --border-subtle: rgba(0, 0, 0, 0.08);
+    --border-medium: rgba(0, 0, 0, 0.15);
+    --border-strong: rgba(0, 0, 0, 0.25);
+
+    color: var(--text-primary);
+    background-color: var(--bg-primary);
   }
   a:hover {
-    color: #747bff;
+    color: var(--link-light-hover);
   }
   button {
-    background-color: #f9f9f9;
+    background-color: var(--bg-button-light);
   }
 }

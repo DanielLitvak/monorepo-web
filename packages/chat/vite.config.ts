@@ -3,7 +3,7 @@ import preact from '@preact/preset-vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/monorepo-web/',
+  base: process.env.NODE_ENV !== 'production' ? '/' : '/monorepo-web/',
   plugins: [
     preact(),
     {
