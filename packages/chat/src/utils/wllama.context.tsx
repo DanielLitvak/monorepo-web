@@ -38,7 +38,6 @@ export const WllamaProvider = ({ children }: { children: ComponentChildren }) =>
     downloadProgress.value = progressPercentage;
   }, [downloadProgress]);
 
-  console.log('@@@', currentModel, downloadProgress, messages );
 
   useEffect(() => {
     (async () => {
