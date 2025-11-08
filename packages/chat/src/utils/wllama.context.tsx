@@ -3,19 +3,22 @@ import { useCallback, useContext, useEffect, useRef } from 'preact/hooks';
 import type { DownloadProgressCallback, ModelManager, Wllama, WllamaChatMessage } from '@wllama/wllama';
 import { modelManager, wllama } from '../wllama';
 import { MODELS, type Model } from '../config';
-import { signal } from '@preact/signals';
+import { signal, computed } from '@preact/signals';
 
 function createWllamaStore() {
   const messages = signal<WllamaChatMessage[]>([]);
-  const currentModel = signal(
+  const currentModelName = signal(
     modelQueryParam in MODELS
       ? modelQueryParam as Model
       : 'qwen25'
   );
   const downloadProgress = signal(0);
+  const currentModel = computed(() => MODELS[currentModelName.value]);
+  const currentModelDisplayName = computed(() => currentModel.value.displayName);
+  const currentSampling = computed(() => currentModel.value.sampling);
+  const lastUserMessage = computed(() => messages.value.reverse().find(({ role }) => role === 'user'));
 
-
-  return { messages, currentModel, downloadProgress };
+  return { messages, currentModel, downloadProgress, currentModelDisplayName, currentSampling, lastUserMessage };
 }
 
 interface TWllamaContext extends ReturnType<typeof createWllamaStore> {
@@ -30,7 +33,7 @@ const WllamaContext = createContext<TWllamaContext>({} as unknown as TWllamaCont
 const controller = new AbortController();
 
 export const WllamaProvider = ({ children }: { children: ComponentChildren }) => {
-  const { currentModel, downloadProgress, messages } = createWllamaStore();
+  const { currentModel, currentModelDisplayName, currentSampling, downloadProgress, lastUserMessage, messages } = createWllamaStore();
   const signalRef = useRef(controller.signal);
 
   const progressCallback: DownloadProgressCallback = useCallback(({ loaded, total }) => {
@@ -42,13 +45,13 @@ export const WllamaProvider = ({ children }: { children: ComponentChildren }) =>
   useEffect(() => {
     (async () => {
       const model = await modelManager.getModelOrDownload(
-        MODELS[currentModel.value].url,
+        currentModel.value.url,
         {
           progressCallback,
           signal: signalRef.current,
         }
       );
-      wllama.loadModel(model, { ...(MODELS[currentModel.value].modelConfig ?? {}) });
+      wllama.loadModel(model, { ...(currentModel.value.modelConfig ?? {}) });
     })();
 
     return () => {
@@ -58,7 +61,14 @@ export const WllamaProvider = ({ children }: { children: ComponentChildren }) =>
 
   return (
     <WllamaContext.Provider value={{
-      wllama, modelManager, downloadProgress, currentModel, messages
+      wllama,
+      modelManager,
+      currentModel,
+      currentModelDisplayName,
+      currentSampling,
+      downloadProgress,
+      lastUserMessage,
+      messages,
     }}>
       {children}
     </WllamaContext.Provider>

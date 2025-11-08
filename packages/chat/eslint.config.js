@@ -4,13 +4,14 @@ import tseslint, { parser } from "typescript-eslint";
 import tanstackQuery from '@tanstack/eslint-plugin-query';
 import preact from "eslint-config-preact";
 import { defineConfig } from "eslint/config";
+import prettier from 'eslint-config-prettier';
 
 export default defineConfig([
-  { 
-    files: ["**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"], 
-    plugins: { js }, 
-    extends: ["js/recommended"], 
-    languageOptions: { globals: globals.browser } 
+  {
+    files: ["**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
+    plugins: { js },
+    extends: ["js/recommended"],
+    languageOptions: { globals: globals.browser }
   },
   tseslint.configs.recommended,
   tseslint.configs.stylistic,
@@ -26,4 +27,5 @@ export default defineConfig([
     },
   },
   tanstackQuery,
+  prettier,
 ]);
