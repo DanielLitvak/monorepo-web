@@ -1,5 +1,4 @@
 import { useRegisterSW } from 'virtual:pwa-register/preact';
-import { useEffect } from 'preact/hooks';
 
 export function usePWA() {
   const { needRefresh: [needRefresh, setNeedRefresh], offlineReady: [offlineReady, setOfflineReady], updateServiceWorker } = useRegisterSW({
@@ -19,19 +18,7 @@ export function usePWA() {
     onRegisterError(error) {
       console.error('SW registration error', error);
     },
-    onOfflineReady() {
-      console.log('@ Offline ready callback triggered - setting offlineReady to true');
-      // setOfflineReady(true);
-    },
-    onNeedRefresh() {
-      console.log('Need refresh')
-    },
-  })
-
-  // Debug: Log offlineReady state changes
-  useEffect(() => {
-    console.log('offlineReady state changed:', offlineReady);
-  }, [offlineReady]);
+  });
 
   return {
     needRefresh,
@@ -41,4 +28,3 @@ export function usePWA() {
     updateServiceWorker,
   }
 }
-

@@ -38,7 +38,7 @@ export function Main() {
       {needRefresh && (
         <div style={{
           position: 'fixed',
-          bottom: '12px',
+          top: '12px',
           right: '12px',
           zIndex: 1000,
           background: '#40414f',
@@ -70,7 +70,7 @@ export function Main() {
       {offlineReady && (
         <div style={{
           position: 'fixed',
-          bottom: '12px',
+          top: '12px',
           right: '12px',
           zIndex: 1000,
           background: '#10a37f',
