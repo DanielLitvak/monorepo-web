@@ -9,25 +9,33 @@ import type { CompletionChunk } from '@wllama/wllama';
 
 
 export const useChatCompletion = () => {
-  const { wllama, messages } = useWllama();
-  const key = computed(() => messages.value.reduce((acc, cur) => cur.role === 'user' ? acc + 1 : acc, 0));
+  const { wllama, messages, currentSampling } = useWllama();
+  const key = computed(() => {
+    const lastUserMessage = [...messages.value].reverse().find(m => m.role === 'user');
+    return lastUserMessage?.content ?? '';
+  });
 
   return useQuery({
     queryKey: ['chat', 'chatNamePlaceholder', key.value],
     enabled: !!messages.value.length,
     queryFn: streamedQuery({
       initialValue: '',
-      reducer: (acc: string, chunk: CompletionChunk) => {
-        return `${acc} ${chunk.currentText}`.trim();
+      reducer: (_acc: string, chunk: CompletionChunk) => {
+        return chunk.currentText.trim();
       },
       streamFn: ({ signal }) => wllama
         .createChatCompletion(messages.value, {
           ...DEFAULT_INFERENCE_PARAMS,
+          sampling: {
+            ...DEFAULT_INFERENCE_PARAMS.sampling,
+            ...(currentSampling.value ?? {}),
+          },
+          useCache: true,
           stream: true,
           abortSignal: signal,
         }),
     }),
-    staleTime: 0,
+    staleTime: Infinity,
     gcTime: 0,
   });
 }

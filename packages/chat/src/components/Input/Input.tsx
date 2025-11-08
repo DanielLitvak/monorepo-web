@@ -10,8 +10,7 @@ export const Input: FC = () => {
 
   useEffect(() => {
     if (data) {
-      // const recentText = data?.reduce((acc, cur) => `${acc} ${cur.currentText}`.trim(), '')
-      pushAssistant(data ?? '');
+      pushAssistant(data);
     }
   }, [data]);
 

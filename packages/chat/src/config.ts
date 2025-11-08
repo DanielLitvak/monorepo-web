@@ -8,13 +8,13 @@ export const CONFIG_PATHS = {
 };
 
 export const DEFAULT_INFERENCE_PARAMS: Partial<ChatCompletionOptions> = {
-  useCache: true,
   sampling: {
-    temp: 0.5,
-    top_k: 40,
-    top_p: 0.9,
+    temp: 0.3,
+    top_k: 20,
+    top_p: 0.7,
+    penalty_repeat: 1.1,
   },
-  nPredict: 150,
+  nPredict: 100,
 };
 
 interface ModelParams {
@@ -35,7 +35,7 @@ export const MODELS: Record<string, ModelParams> = {
     url: 'https://huggingface.co/bartowski/Llama-3.2-1B-Instruct-GGUF/resolve/main/Llama-3.2-1B-Instruct-Q4_K_M.gguf',
     displayName: 'Llama 3.2',
     sampling: {},
-    modelConfig: { n_ctx: 32768 },
+    modelConfig: { n_ctx: 61440 },
   },
   lfm2vl: {
     url: 'https://huggingface.co/LiquidAI/LFM2-VL-3B-GGUF/resolve/main/LFM2-VL-3B-Q4_0.gguf',
